@@ -1,6 +1,5 @@
 import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import Head from "next/head";
-import Link from "next/link";
 import Image from "next/image";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -9,6 +8,7 @@ dayjs.extend(relativeTime);
 
 import { api } from "~/utils/api";
 import type { RouterOutputs } from "~/utils/api";
+import { LoadingSpinner } from "~/components/loading";
 
 const CreatePostWizard = () => {
   const user = useUser();
@@ -62,7 +62,7 @@ export default function Home() {
   // const hello = api.example.hello.useQuery({ text: "from tRPC" });
   const user = useUser();
   const { data, isLoading } = api.posts.getAll.useQuery();
-  if (data && isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingSpinner />;
   if (!data) return <div>no data</div>;
   console.log(user);
   return (
