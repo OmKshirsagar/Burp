@@ -5,8 +5,9 @@ import Link from "next/link";
 import { api } from "~/utils/api";
 
 export default function Home() {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  // const hello = api.example.hello.useQuery({ text: "from tRPC" });
   const user = useUser();
+  const { data } = api.posts.getAll.useQuery();
   console.log(user);
   return (
     <>
@@ -48,9 +49,13 @@ export default function Home() {
               </div>
             </Link>
           </div>
-          <p className="text-2xl text-white">
-            {hello.data ? hello.data.greeting : "Loading tRPC query..."}
-          </p>
+        </div>
+        <div >
+          {data?.map((post) => (
+            <div key={post.id}>
+              <h2>{post.content}</h2>
+            </div>
+          ))}
         </div>
       </main>
     </>
