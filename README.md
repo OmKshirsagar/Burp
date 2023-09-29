@@ -1,7 +1,7 @@
 # Twitter's Emoji Only Clone
 
 This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
-I have also used [Clerk](https://clerk.com/) for authentication and [PlanetScale](https://planetscale.com/) for database. For Logging I have used [Axiom](https://axiom.co/).
+I have also used [Clerk](https://clerk.com/) for authentication and [PlanetScale](https://planetscale.com/) for database. For Logging I have used [Axiom](https://axiom.co/). To add a rate limit I have used [UpStash](https://upstash.com/).
 
 This app is deployed on [Vercel](https://vercel.com/). You can check it out [here](https://burp-tweeter.vercel.app/).
 
