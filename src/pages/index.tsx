@@ -19,7 +19,14 @@ const CreatePostWizard = () => {
     return (<div className="flex">Sign in to create a post</div>);
   }
 
-  const {mutate} = api.posts.create.useMutation();
+  const ctx = api.useContext();
+
+  const {mutate, isLoading: isPosting} = api.posts.create.useMutation({
+    onSuccess: () => {
+      setInput("");
+      void ctx.posts.getAll.invalidate();
+    }
+  });
 
 
 
@@ -35,8 +42,11 @@ const CreatePostWizard = () => {
       />
       <input
         placeholder="Type some emoji's"
+        type="text"
+        value={input}
         className="grow bg-transparent outline-none"
         onChange={(e) => setInput(e.target.value) }
+        disabled={isPosting}
       />
 
       <button
@@ -44,6 +54,7 @@ const CreatePostWizard = () => {
         onClick={() => {
           mutate({content: input})
         }}
+        disabled={isPosting}
       >Post</button>
     </div>
   );
