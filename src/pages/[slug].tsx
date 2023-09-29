@@ -44,7 +44,7 @@ const ProfilePage: NextPage<PageProps> = ({ username }) => {
           />
         </div>
         <div className="h-[64px]"></div>
-        <div className="p-4 text-2xl font-bold">{data.username}</div>
+        <div className="p-4 text-2xl font-bold">{`@${data.username}`}</div>
         <div className="w-full border-b border-slate-400"></div>
       </PageLayout>
     </>
