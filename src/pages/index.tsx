@@ -16,7 +16,7 @@ const CreatePostWizard = () => {
   const [ input, setInput ] = useState("");
 
   if (!user.isSignedIn) {
-    return <div>Sign in to create a post</div>;
+    return (<div className="flex">Sign in to create a post</div>);
   }
 
   const {mutate} = api.posts.create.useMutation();
@@ -104,8 +104,11 @@ export default function Home() {
         <div className="h-full w-full border-x border-slate-400 md:max-w-2xl">
           <div className="flex border-b p-4 text-2xl text-white">
             {!isSignedIn && (
-              <div className="flex justify-center">
+              <div className="flex w-full justify-between">
+              <CreatePostWizard></CreatePostWizard>
+              <div className="flex">
                 <SignInButton></SignInButton>
+              </div>
               </div>
             )}
             {isSignedIn && (
