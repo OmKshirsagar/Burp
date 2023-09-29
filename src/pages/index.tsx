@@ -50,7 +50,7 @@ const CreatePostWizard = () => {
       />
 
       <button
-        className="bg-blue-500 rounded-md my-3 p-2 text-white"
+        className="bg-slate-300 rounded-md my-3 p-2 text-slate-700"
         onClick={() => {
           mutate({content: input})
         }}
@@ -113,7 +113,7 @@ export default function Home() {
       </Head>
       <main className="flex h-screen justify-center">
         <div className="h-full w-full border-x border-slate-400 md:max-w-2xl">
-          <div className="flex border-b p-4 text-2xl text-white">
+          <div className="flex border-b p-4 text-white">
             {!isSignedIn && (
               <div className="flex w-full justify-between">
               <CreatePostWizard></CreatePostWizard>
