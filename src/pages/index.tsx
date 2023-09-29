@@ -102,6 +102,7 @@ const Feed = () => {
 export default function Home() {
   // const hello = api.example.hello.useQuery({ text: "from tRPC" });
   const { isLoaded: userLoaded, isSignedIn } = useUser();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data } = api.posts.getAll.useQuery();
   if (!userLoaded) return <div />;
 
