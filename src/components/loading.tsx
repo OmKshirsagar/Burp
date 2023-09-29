@@ -3,7 +3,7 @@ export const LoadingSpinner = (props: { size?: number }) => {
     <div role="status">
       <svg
         aria-hidden="true"
-        className="mr-2 inline h-8 w-8 animate-spin fill-slate-300 text-slate-200 dark:fill-slate-700 dark:text-slate-600"
+        className="mr-2 inline h-8 w-8 animate-spin fill-slate-700 text-slate-600 dark:fill-slate-400 dark:text-slate-300"
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

@@ -8,27 +8,35 @@ dayjs.extend(relativeTime);
 
 import { api } from "~/utils/api";
 import type { RouterOutputs } from "~/utils/api";
-import { LoadingPage } from "~/components/loading";
+import { LoadingPage, LoadingSpinner } from "~/components/loading";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const CreatePostWizard = () => {
   const user = useUser();
-  const [ input, setInput ] = useState("");
+  const [input, setInput] = useState("");
 
   if (!user.isSignedIn) {
-    return (<div className="flex">Sign in to create a post</div>);
+    return <div className="flex">Sign in to create a post</div>;
   }
 
   const ctx = api.useContext();
 
-  const {mutate, isLoading: isPosting} = api.posts.create.useMutation({
+  const { mutate, isLoading: isPosting } = api.posts.create.useMutation({
     onSuccess: () => {
       setInput("");
       void ctx.posts.getAll.invalidate();
-    }
+    },
+    onError: (e) => {
+      const errorMsg = e.data?.zodError?.fieldErrors.content;
+
+      if (errorMsg?.[0]) {
+        toast.error(errorMsg[0]);
+      } else {
+        toast.error("Failed to post! Please try again later.");
+      }
+    },
   });
-
-
 
   console.log(user.user);
   return (
@@ -45,17 +53,35 @@ const CreatePostWizard = () => {
         type="text"
         value={input}
         className="grow bg-transparent outline-none"
-        onChange={(e) => setInput(e.target.value) }
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            if (input !== "") {
+              mutate({ content: input });
+            }
+          }
+        }}
         disabled={isPosting}
       />
 
-      <button
-        className="bg-slate-300 rounded-md my-3 p-2 text-slate-700"
-        onClick={() => {
-          mutate({content: input})
-        }}
-        disabled={isPosting}
-      >Post</button>
+      {input !== "" && !isPosting && (
+        <button
+          className="my-3 rounded-md bg-slate-300 p-2 text-slate-700"
+          onClick={() => {
+            mutate({ content: input });
+          }}
+        >
+          Post
+        </button>
+      )}
+      {
+        isPosting && (
+          <div className="flex justify-center items-center">
+            <LoadingSpinner />
+          </div>
+        )
+      }
     </div>
   );
 };
@@ -75,7 +101,9 @@ const PostView = (props: PostWithUser) => {
       <div className="flex flex-col">
         <div className="flex gap-1 text-slate-400">
           <span>{`@${author.username}`}</span>·
-          <span className="font-thin">{dayjs(post.createdAt!).fromNow()}</span>
+          <span className="font-thin">
+            {dayjs(post.createdAt as Date).fromNow()}
+          </span>
         </div>
         <div className="flex">
           <span className="text-xl">{post.content}</span>
@@ -116,20 +144,22 @@ export default function Home() {
           <div className="flex border-b p-4 text-white">
             {!isSignedIn && (
               <div className="flex w-full justify-between">
-              <CreatePostWizard></CreatePostWizard>
-              <div className="flex">
-                <SignInButton></SignInButton>
-              </div>
+                <CreatePostWizard></CreatePostWizard>
+                <div className="flex">
+                  <SignInButton></SignInButton>
+                </div>
               </div>
             )}
             {isSignedIn && (
               <>
                 <CreatePostWizard></CreatePostWizard>
-                <SignOutButton></SignOutButton>
+                <div className="flex min-w-fit pl-2">
+                  <SignOutButton></SignOutButton>
+                </div>
               </>
             )}
           </div>
-          <Feed/>
+          <Feed />
         </div>
       </main>
     </>
